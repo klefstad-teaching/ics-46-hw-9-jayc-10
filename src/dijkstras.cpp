@@ -29,7 +29,7 @@ vector<int> dijkstra_shortest_path(const Graph& G, int source, vector<int>& prev
             int v = edge.dst;
             int weight = edge.weight;
 
-            if (distance[u] != INF && distance[u] + weight < distance[v]) {
+            if (!visited[v] && distance[u] + weight < distance[v]) {
                 distance[v] = distance[u] + weight;
                 previous[v] = u;
                 pq.push(Node(v, distance[v]));
@@ -50,10 +50,10 @@ vector<int> extract_shortest_path(const vector<int>& distances, const vector<int
 }
 
 void print_path(const vector<int>& v, int total) {
-    if (v.empty()) {
-        cout << "No path found." << endl;
-        return;
-    }
+    // if (v.empty()) {
+    //     cout << "No path found." << endl;
+    //     return;
+    // }
     for (int i = 0; i < v.size(); i++) {
         cout << v[i] << " ";
     }
