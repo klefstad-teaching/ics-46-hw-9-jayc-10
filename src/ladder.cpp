@@ -9,13 +9,19 @@ void error(string word1, string word2, string msg) {
 }
 
 bool edit_distance_within(const string& str1, const string& str2, int d) {
-    if (str1.length() != str2.length()) return false;
+    int len1 = str1.length(), len2 = str2.length();
+    if (abs(len1 - len2) > d) return false;
 
-    int count = 0;
-    for (int i = 0; i < str1.length(); i++) {
-        if (str1[i] != str2[i]) {
+    int count = 0, i = 0, j = 0;
+    while (i < len1 && j < len2) {
+        if (str1[i] != str2[j]) {
             count++;
             if (count > d) return false;
+            if (len1 > len2) i++; // deletion
+            else if (len1 < len2) j++; // insertion
+            else { i++; j++; } // replace
+        } else {
+            i++; j++;
         }
     }
     return count <= d;
@@ -81,7 +87,7 @@ void load_words(set<string>& word_list, const string& file_name) {
 
 void print_word_ladder(const vector<string>& ladder) {
     if (ladder.empty()) {
-        cout << "Empty" << endl;
+        cout << "No word ladder found." << endl;
         return;
     }
     for (int i = 0; i < ladder.size(); i++) {
